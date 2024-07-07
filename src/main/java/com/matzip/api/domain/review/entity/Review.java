@@ -11,6 +11,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,9 +36,12 @@ public class Review extends BaseTimeEntity {
     private Restaurant restaurant;
 
     @Column(nullable = false)
+    @Min(1)
+    @Min(5)
     private Integer rating;
 
     @Column(nullable = false)
+    @Size(min = 10, max = 1000)
     private String content;
 
 
