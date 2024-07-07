@@ -1,6 +1,7 @@
 package com.matzip.api.common.api;
 
 import com.matzip.api.common.error.ErrorCodeIfs;
+import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class Api<T> {
 
     private final Result result;
 
+    @Valid
     private final T body;
 
     public static <T> Api<T> OK(T data) {
