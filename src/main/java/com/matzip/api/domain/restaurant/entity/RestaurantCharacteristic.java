@@ -28,7 +28,7 @@ public class RestaurantCharacteristic {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id")
+    @JoinColumn(name = "restaurant_exteranl_id")
     private Restaurant restaurant;
 
     @Column(nullable = false)

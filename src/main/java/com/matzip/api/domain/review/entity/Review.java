@@ -65,7 +65,6 @@ public class Review extends BaseTimeEntity {
         review.user = user;
         review.restaurant = restaurant;
         review.content = content;
-        restaurant.addReview(review);
         return review;
     }
 }

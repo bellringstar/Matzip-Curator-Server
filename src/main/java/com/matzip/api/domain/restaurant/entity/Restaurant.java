@@ -5,6 +5,8 @@ import com.matzip.api.domain.review.entity.Review;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -22,7 +24,10 @@ import lombok.NoArgsConstructor;
 public class Restaurant extends BaseTimeEntity {
 
     @Id
-    @Column(name = "external_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "external_id", unique = true)
     private String externalId;
 
     @Column(nullable = false)
