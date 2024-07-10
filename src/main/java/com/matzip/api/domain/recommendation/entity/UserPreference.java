@@ -53,11 +53,26 @@ public class UserPreference extends BaseTimeEntity {
                 );
     }
 
+    public void adjustAspectWeight(RestaurantAspect aspect, Double adjustment) {
+        aspectPreferences.stream()
+                .filter(pref -> pref.getAspect() == aspect)
+                .findFirst()
+                .ifPresent(pref -> pref.adjustWeight(adjustment));
+    }
+
     public Double getAspectScore(RestaurantAspect aspect) {
         return aspectPreferences.stream()
                 .filter(pref -> pref.getAspect() == aspect)
                 .findFirst()
                 .map(AspectPreference::getScore)
+                .orElse(0.0);
+    }
+
+    public Double getWeightedAspectScore(RestaurantAspect aspect) {
+        return aspectPreferences.stream()
+                .filter(pref -> pref.getAspect() == aspect)
+                .findFirst()
+                .map(AspectPreference::getWeightedScore)
                 .orElse(0.0);
     }
 }

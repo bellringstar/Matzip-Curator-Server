@@ -1,6 +1,7 @@
 package com.matzip.api.domain.review.service;
 
 import com.matzip.api.domain.review.entity.Review;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -21,6 +22,14 @@ public interface ReviewViewService {
      * @return 해당 레스토랑의 리뷰 목록 (페이지)
      */
     Page<Review> getReviewsByRestaurantId(Long restaurantId, Pageable pageable);
+
+    /**
+     * 특정 레스토랑의 리뷰 목록을 조회합니다.
+     *
+     * @param restaurantId 레스토랑 ID
+     * @return 해당 레스토랑의 리뷰 목록 (리스트)
+     */
+    List<Review> getReviewsForRestaurant(Long restaurantId);
 
     /**
      * 특정 사용자가 작성한 리뷰 목록을 조회합니다.

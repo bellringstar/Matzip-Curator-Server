@@ -3,6 +3,7 @@ package com.matzip.api.domain.review.service;
 import com.matzip.api.domain.review.dto.ReviewRequestDto;
 import com.matzip.api.domain.review.dto.ReviewUpdateRequestDto;
 import com.matzip.api.domain.review.entity.Review;
+import java.util.List;
 
 public interface ReviewService {
     /**
@@ -30,4 +31,5 @@ public interface ReviewService {
      * @param id 삭제할 리뷰의 ID
      */
     void deleteReview(Long id);
+
 }
