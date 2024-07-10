@@ -3,8 +3,10 @@ package com.matzip.api.domain.external.dto;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class RestaurantSearchResponse {
     private List<Restaurant> restaurants;
 
@@ -23,6 +25,7 @@ public class RestaurantSearchResponse {
     }
 
     @Data
+    @NoArgsConstructor
     public static class Restaurant {
         private String title;
         private String category;
@@ -41,6 +44,11 @@ public class RestaurantSearchResponse {
             this.telephone = telephone;
             this.mapx = mapx;
             this.mapy = mapy;
+        }
+
+        public String generateId() {
+            // TODO: 가게를 유일하게 식별할 수 있는 정보는 무엇인가...
+            return title + ":" + mapx + ":" + mapy;
         }
     }
 }
