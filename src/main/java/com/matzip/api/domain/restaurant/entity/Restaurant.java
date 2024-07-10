@@ -33,6 +33,9 @@ public class Restaurant extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private boolean active = true;
+
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RestaurantCharacteristic> characteristics = new ArrayList<>();
 
@@ -43,5 +46,17 @@ public class Restaurant extends BaseTimeEntity {
     public Restaurant(String externalId, String name) {
         this.externalId = externalId;
         this.name = name;
+    }
+
+    public void updateExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public void deactivate() {
+        this.active = false;
+    }
+
+    public boolean isDeactivated() {
+        return this.active == false;
     }
 }
