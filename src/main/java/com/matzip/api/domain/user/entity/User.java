@@ -3,6 +3,7 @@ package com.matzip.api.domain.user.entity;
 import com.matzip.api.common.entity.BaseTimeEntity;
 import com.matzip.api.domain.recommendation.entity.UserPreference;
 import com.matzip.api.domain.review.entity.Review;
+import com.matzip.api.domain.user.dto.UserCreateRequestDto;
 import com.matzip.api.domain.user.enums.AuthProvider;
 import com.matzip.api.domain.user.enums.Role;
 import jakarta.persistence.CascadeType;
@@ -34,8 +35,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Table(name = "users")
-@Builder
-@AllArgsConstructor // 임시로 설정
 public class User extends BaseTimeEntity {
 
     @Id
@@ -75,4 +74,29 @@ public class User extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     private UserPreference preference;
+
+    @Builder
+    public User(Long id, String username, String email, String password, String name, Boolean emailVerified,
+                AuthProvider provider, String providerId) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.emailVerified = emailVerified;
+        this.provider = provider;
+        this.providerId = providerId;
+    }
+
+    public static User createUser(UserCreateRequestDto requestDto) {
+        return User.builder()
+                .username(requestDto.getUsername())
+                .email(requestDto.getEmail())
+                .password(requestDto.getPassword())
+                .name(requestDto.getName())
+                .emailVerified(requestDto.getEmailVerified())
+                .provider(requestDto.getProvider())
+                .providerId(requestDto.getProviderId())
+                .build();
+    }
 }
