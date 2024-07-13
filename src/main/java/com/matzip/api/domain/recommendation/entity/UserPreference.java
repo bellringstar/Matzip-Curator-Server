@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -34,8 +35,10 @@ public class UserPreference extends BaseTimeEntity {
     @OneToMany(mappedBy = "userPreference", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AspectPreference> aspectPreferences = new ArrayList<>();
 
-    public UserPreference(User user) {
-        this.user = user;
+    public static UserPreference createForUser(User user) {
+        UserPreference userPreference = new UserPreference();
+        userPreference.user = user;
+        return userPreference;
     }
 
     public void addAspectPreference(RestaurantAspect aspect, Double score) {
