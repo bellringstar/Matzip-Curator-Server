@@ -48,6 +48,10 @@ public class Restaurant extends BaseTimeEntity {
         this.name = name;
     }
 
+    public void addCharacteristic(RestaurantCharacteristic characteristic) {
+        characteristics.add(characteristic);
+    }
+
     public void updateExternalId(String externalId) {
         this.externalId = externalId;
     }

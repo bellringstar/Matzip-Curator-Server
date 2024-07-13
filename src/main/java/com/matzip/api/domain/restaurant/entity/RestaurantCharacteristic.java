@@ -38,10 +38,10 @@ public class RestaurantCharacteristic {
     @Column(nullable = false)
     private Double score;
 
-    @Builder
     public RestaurantCharacteristic(Restaurant restaurant, RestaurantAspect aspect, Double score) {
         this.restaurant = restaurant;
         this.aspect = aspect;
         this.score = score;
+        restaurant.addCharacteristic(this);
     }
 }
