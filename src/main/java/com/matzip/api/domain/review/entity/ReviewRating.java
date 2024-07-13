@@ -36,4 +36,14 @@ public class ReviewRating {
 
     @Column(nullable = false)
     private Double rating;
+
+    public static ReviewRating createReviewRating(Review review, RestaurantAspect aspect, Double rating) {
+        ReviewRating reviewRating = new ReviewRating();
+        reviewRating.review = review;
+        reviewRating.aspect = aspect;
+        reviewRating.rating = rating;
+
+        review.addReviewRating(reviewRating);
+        return reviewRating;
+    }
 }

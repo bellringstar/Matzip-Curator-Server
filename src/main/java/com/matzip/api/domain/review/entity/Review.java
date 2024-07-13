@@ -67,4 +67,8 @@ public class Review extends BaseTimeEntity {
         review.content = content;
         return review;
     }
+
+    public void addReviewRating(ReviewRating rating) {
+        ratings.add(rating);
+    }
 }
