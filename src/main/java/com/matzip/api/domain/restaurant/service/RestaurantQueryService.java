@@ -2,7 +2,7 @@ package com.matzip.api.domain.restaurant.service;
 
 import com.matzip.api.domain.external.dto.RestaurantSearchResponse;
 import com.matzip.api.domain.restaurant.dto.RestaurantSearchCriteria;
-import com.matzip.api.restaurant.dto.RestaurantSearchResult;
+import com.matzip.api.domain.restaurant.dto.RestaurantSearchResult;
 
 /**
  * 레스토랑 정보의 조회 및 검색을 처리하는 서비스 인터페이스입니다. 이 인터페이스는 CQRS 패턴의 Query 부분을 담당합니다.
