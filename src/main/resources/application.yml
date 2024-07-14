@@ -19,7 +19,7 @@ spring:
         jdbc:
           batch_size: 50
         default_batch_fetch_size: 100
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     defer-datasource-initialization: true
 
@@ -34,14 +34,29 @@ spring:
       group-id: matzipcurator-group
       auto-offset-reset: earliest
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-google-client-id
+            client-secret: your-google-client-secret
+            scope: profile, email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+            client-name: Google
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute: sub
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
     org.springframework.data.elasticsearch.client.WIRE: TRACE
-
-server:
-  port: 8080
 
 jwt:
   privateKey: ${JWT_PRIVATE_KEY}
@@ -51,19 +66,28 @@ jwt:
   issuer: ${JWT_ISSUER}
   audience: ${JWT_AUDIENCE}
 
+
 management:
   endpoints:
     web:
       exposure:
         include: health,info,metrics
 
+
 app:
-  cors:
-    allowed-origins: http://localhost:3000
   elasticsearch:
     index-name: restaurants
+  oauth2:
+    authorizedRedirectUris:
+      - http://localhost:3000/oauth2/redirect
 
 naver:
   client:
     secret: ${NAVER_CLIENT_SECRET}
     id: ${NAVER_CLIENT_ID}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs
