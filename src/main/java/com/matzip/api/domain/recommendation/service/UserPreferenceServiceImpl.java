@@ -49,7 +49,7 @@ public class UserPreferenceServiceImpl implements
 
         eventPublisher.publish(new UserPreferenceUpdatedEvent(
                 userPreference.getId(),
-                userPreference.getUser().getUsername(),
+                userPreference.getUser().getLoginId(),
                 userPreference
         ));
     }

@@ -129,7 +129,7 @@ public class PersonalizedRatingService implements RatingService {
         double similaritySum = 0.0;
 
         for (Review review : restaurantReviews) {
-            Double similarity = userSimilarities.get(review.getUser().getUsername());
+            Double similarity = userSimilarities.get(review.getUser().getLoginId());
             if (similarity != null && similarity > 0) {
                 Double rating = getAspectRating(review, aspect);
                 if (rating != null) {
@@ -176,7 +176,7 @@ public class PersonalizedRatingService implements RatingService {
         Map<String, Double> similarities = new HashMap<>();
 
         for (Review review : restaurantReviews) {
-            String reviewerUsername = review.getUser().getUsername();
+            String reviewerUsername = review.getUser().getLoginId();
             double similarity = calculateReviewSimilarity(userPreference, review);
             similarities.put(reviewerUsername, similarity);
         }

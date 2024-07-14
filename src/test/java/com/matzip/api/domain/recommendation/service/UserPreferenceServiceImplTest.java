@@ -87,8 +87,8 @@ class UserPreferenceServiceImplTest {
             verify(eventPublisher).publish(eventCaptor.capture());
 
             UserPreferenceUpdatedEvent capturedEvent = eventCaptor.getValue();
-            assertEquals(user.getUsername(), capturedEvent.getUserPreference().getUser().getUsername());
-            assertEquals(user.getUsername(), capturedEvent.getUsername());
+            assertEquals(user.getLoginId(), capturedEvent.getUserPreference().getUser().getLoginId());
+            assertEquals(user.getLoginId(), capturedEvent.getUsername());
             assertSame(userPreference, capturedEvent.getUserPreference());
         }
 

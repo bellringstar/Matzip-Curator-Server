@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,7 +41,7 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String loginId;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -79,7 +78,7 @@ public class User extends BaseTimeEntity {
     public User(Long id, String username, String email, String password, String name, Boolean emailVerified,
                 AuthProvider provider, String providerId) {
         this.id = id;
-        this.username = username;
+        this.loginId = username;
         this.email = email;
         this.password = password;
         this.name = name;
