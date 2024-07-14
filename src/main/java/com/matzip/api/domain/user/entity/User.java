@@ -3,9 +3,10 @@ package com.matzip.api.domain.user.entity;
 import com.matzip.api.common.entity.BaseTimeEntity;
 import com.matzip.api.domain.recommendation.entity.UserPreference;
 import com.matzip.api.domain.review.entity.Review;
-import com.matzip.api.domain.user.dto.UserCreateRequestDto;
+import com.matzip.api.security.dto.UserCreateRequestDto;
 import com.matzip.api.domain.user.enums.AuthProvider;
 import com.matzip.api.domain.user.enums.Role;
+import com.matzip.api.security.oauth2.user.OAuth2UserInfo;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -29,6 +30,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -64,7 +66,7 @@ public class User extends BaseTimeEntity {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role")
+    @Column(name = "user_roles")
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
@@ -75,10 +77,10 @@ public class User extends BaseTimeEntity {
     private UserPreference preference;
 
     @Builder
-    public User(Long id, String username, String email, String password, String name, Boolean emailVerified,
+    public User(Long id, String loginId, String email, String password, String name, Boolean emailVerified,
                 AuthProvider provider, String providerId) {
         this.id = id;
-        this.loginId = username;
+        this.loginId = loginId;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -88,8 +90,8 @@ public class User extends BaseTimeEntity {
     }
 
     public static User createUser(UserCreateRequestDto requestDto) {
-        return User.builder()
-                .username(requestDto.getUsername())
+        User user = User.builder()
+                .loginId(requestDto.getLoginId())
                 .email(requestDto.getEmail())
                 .password(requestDto.getPassword())
                 .name(requestDto.getName())
@@ -97,5 +99,13 @@ public class User extends BaseTimeEntity {
                 .provider(requestDto.getProvider())
                 .providerId(requestDto.getProviderId())
                 .build();
+        user.roles.add(Role.ROLE_USER);
+        return user;
+    }
+
+    public User updateOAuth(OAuth2UserRequest userRequest, OAuth2UserInfo oAuth2UserInfo) {
+        provider = AuthProvider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
+        providerId = oAuth2UserInfo.getId();
+        return this;
     }
 }
