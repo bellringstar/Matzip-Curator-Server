@@ -1,4 +1,4 @@
-package com.matzip.api.domain.user.event;
+package com.matzip.api.security.event;
 
 import com.matzip.api.common.event.DomainEvent;
 import com.matzip.api.domain.user.entity.User;
