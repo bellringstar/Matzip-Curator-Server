@@ -85,4 +85,8 @@ public class JwtTokenProvider {
         }
         return false;
     }
+
+    public TokenPair createTokenPair(UserPrincipal userPrincipal) {
+        return new TokenPair(generateAccessToken(userPrincipal), generateRefreshToken(userPrincipal));
+    }
 }
