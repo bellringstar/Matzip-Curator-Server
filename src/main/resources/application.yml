@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/matzipcurator?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: user
-    password: password
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE}?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      mode: always
-      schema-locations: classpath:schema.sql
+#  sql:
+#    init:
+#      mode: always
+#      schema-locations: classpath:schema.sql
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,19 +18,18 @@ spring:
         use_sql_comments: true
         jdbc:
           batch_size: 50
-        default_batch_fetch_size: 100  # 연관 엔티티 지연 로딩 시 배치 페치 사이즈
-    open-in-view: false  # OSIV 비활성화
-    defer-datasource-initialization: true # hibernate가 스키마 초기화 후 SQL스크립트 실행
+        default_batch_fetch_size: 100
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+    defer-datasource-initialization: true
 
   data:
     redis:
-      host: localhost
-      port: 6379
-    elasticsearch:
-      cluster-nodes: localhost:9200
-      cluster-name: es-docker-cluster
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+
   kafka:
-    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       group-id: matzipcurator-group
       auto-offset-reset: earliest
@@ -45,7 +44,7 @@ server:
   port: 8080
 
 jwt:
-  secret: your-secret-key-here-should-be-very-long-and-secure
+  secret: ${JWT_SECRET}
   expiration: 86400000  # 24 hours in milliseconds
 
 management:
@@ -54,9 +53,13 @@ management:
       exposure:
         include: health,info,metrics
 
-# Custom application properties
 app:
   cors:
     allowed-origins: http://localhost:3000
   elasticsearch:
     index-name: restaurants
+
+naver:
+  client:
+    secret: ${NAVER_CLIENT_SECRET}
+    id: ${NAVER_CLIENT_ID}

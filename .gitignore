@@ -98,3 +98,6 @@ application-*.properties
 !application.properties
 !application-dev.yml
 !application-dev.properties
+
+## env
+.env
