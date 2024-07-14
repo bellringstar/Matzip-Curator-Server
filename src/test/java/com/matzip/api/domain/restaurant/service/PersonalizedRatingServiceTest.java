@@ -53,12 +53,12 @@ class PersonalizedRatingServiceTest {
         new RestaurantCharacteristic(restaurant, RestaurantAspect.TASTE, 4.0);
         new RestaurantCharacteristic(restaurant, RestaurantAspect.ATMOSPHERE, 3.5);
 
-        userPreference = UserPreference.createForUser(User.builder().username("testUser").build());
+        userPreference = UserPreference.createForUser(User.builder().loginId("testUser").build());
         userPreference.addAspectPreference(RestaurantAspect.TASTE, 5.0);
         userPreference.addAspectPreference(RestaurantAspect.ATMOSPHERE, 3.0);
 
-        User user1 = User.builder().username("user1").build();
-        User user2 = User.builder().username("user2").build();
+        User user1 = User.builder().loginId("user1").build();
+        User user2 = User.builder().loginId("user2").build();
 
         Review review1 = Review.createReview(user1, restaurant, "Great taste");
         ReviewRating.createReviewRating(review1, RestaurantAspect.TASTE, 4.5);
