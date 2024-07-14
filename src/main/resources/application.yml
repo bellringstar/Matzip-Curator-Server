@@ -4,10 +4,10 @@ spring:
     username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  sql:
-#    init:
-#      mode: always
-#      schema-locations: classpath:schema.sql
+  #  sql:
+  #    init:
+  #      mode: always
+  #      schema-locations: classpath:schema.sql
   jpa:
     hibernate:
       ddl-auto: update
@@ -44,8 +44,12 @@ server:
   port: 8080
 
 jwt:
-  secret: ${JWT_SECRET}
-  expiration: 86400000  # 24 hours in milliseconds
+  privateKey: ${JWT_PRIVATE_KEY}
+  publicKey: ${JWT_PUBLIC_KEY}
+  accessExpiration: ${JWT_ACCESS_EXPIRATION}
+  refreshExpiration: ${JWT_REFRESH_EXPIRATION}
+  issuer: ${JWT_ISSUER}
+  audience: ${JWT_AUDIENCE}
 
 management:
   endpoints:
