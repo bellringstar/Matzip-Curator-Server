@@ -8,7 +8,7 @@ import com.matzip.api.domain.recommendation.entity.UserPreference;
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
 import com.matzip.api.domain.recommendation.event.UserPreferenceUpdatedEvent;
 import com.matzip.api.domain.recommendation.repository.UserPreferenceRepository;
-import com.matzip.api.domain.user.event.UserCreatedEvent;
+import com.matzip.api.security.event.UserCreatedEvent;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

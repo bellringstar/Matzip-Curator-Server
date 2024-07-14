@@ -2,7 +2,7 @@ package com.matzip.api.domain.recommendation.service;
 
 import com.matzip.api.domain.recommendation.entity.UserPreference;
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
-import com.matzip.api.domain.user.event.UserCreatedEvent;
+import com.matzip.api.security.event.UserCreatedEvent;
 import java.util.Map;
 
 public interface UserPreferenceService {

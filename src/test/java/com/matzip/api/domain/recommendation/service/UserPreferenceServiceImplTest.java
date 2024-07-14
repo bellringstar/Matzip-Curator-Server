@@ -1,14 +1,25 @@
 package com.matzip.api.domain.recommendation.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.matzip.api.common.event.DomainEventPublisher;
 import com.matzip.api.common.exception.ApiException;
 import com.matzip.api.domain.recommendation.entity.UserPreference;
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
 import com.matzip.api.domain.recommendation.event.UserPreferenceUpdatedEvent;
 import com.matzip.api.domain.recommendation.repository.UserPreferenceRepository;
-import com.matzip.api.domain.user.dto.UserCreateRequestDto;
 import com.matzip.api.domain.user.entity.User;
-import com.matzip.api.domain.user.event.UserCreatedEvent;
+import com.matzip.api.security.dto.UserCreateRequestDto;
+import com.matzip.api.security.event.UserCreatedEvent;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -18,13 +29,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserPreferenceServiceImplTest {
@@ -44,7 +48,7 @@ class UserPreferenceServiceImplTest {
     @BeforeEach
     void setUp() {
         UserCreateRequestDto userCreateRequestDto = new UserCreateRequestDto();
-        userCreateRequestDto.setUsername("testUser");
+        userCreateRequestDto.setLoginId("testUser");
         userCreateRequestDto.setPassword("password");
         userCreateRequestDto.setEmail("test@example.com");
         user = User.createUser(userCreateRequestDto);
@@ -83,7 +87,8 @@ class UserPreferenceServiceImplTest {
 
             verify(userPreferenceRepository).save(userPreference);
 
-            ArgumentCaptor<UserPreferenceUpdatedEvent> eventCaptor = ArgumentCaptor.forClass(UserPreferenceUpdatedEvent.class);
+            ArgumentCaptor<UserPreferenceUpdatedEvent> eventCaptor = ArgumentCaptor.forClass(
+                    UserPreferenceUpdatedEvent.class);
             verify(eventPublisher).publish(eventCaptor.capture());
 
             UserPreferenceUpdatedEvent capturedEvent = eventCaptor.getValue();
