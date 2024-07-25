@@ -35,7 +35,7 @@ public class ReviewRating {
     private RestaurantAspect aspect;
 
     @Column(nullable = false)
-    private Double rating;
+    private Double rating; //Todo: VO로 변경
 
     public static ReviewRating createReviewRating(Review review, RestaurantAspect aspect, Double rating) {
         ReviewRating reviewRating = new ReviewRating();
@@ -43,7 +43,10 @@ public class ReviewRating {
         reviewRating.aspect = aspect;
         reviewRating.rating = rating;
 
-        review.addReviewRating(reviewRating);
         return reviewRating;
+    }
+
+    public void updateScore(double score) {
+        rating = score;
     }
 }

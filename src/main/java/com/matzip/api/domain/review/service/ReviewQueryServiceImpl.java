@@ -1,5 +1,6 @@
 package com.matzip.api.domain.review.service;
 
+import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.repository.ReviewRepository;
 import java.util.List;
@@ -19,27 +20,29 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
     private final ReviewRepository reviewRepository;
 
     @Override
-    public Review getReviewById(Long id) {
+    public ReviewDto getReviewById(Long id) {
+        return reviewRepository.findWithRatingsById(id)
+                .map(ReviewDto::toDto)
+                .orElseThrow();
+    }
+
+    @Override
+    public Page<ReviewDto> getReviewsByRestaurantId(Long restaurantId, Pageable pageable) {
         return null;
     }
 
     @Override
-    public Page<Review> getReviewsByRestaurantId(Long restaurantId, Pageable pageable) {
+    public Page<ReviewDto> getReviewsByUserId(Long userId, Pageable pageable) {
         return null;
     }
 
     @Override
-    public List<Review> getReviewsForRestaurant(Long restaurantId) {
-        return List.of();
-    }
-
-    @Override
-    public Page<Review> getReviewsByUserId(Long userId, Pageable pageable) {
+    public Page<ReviewDto> getLatestReviews(Pageable pageable) {
         return null;
     }
 
     @Override
-    public Page<Review> getLatestReviews(Pageable pageable) {
-        return null;
+    public double getAverageRatingForRestaurant(Long restaurantId) {
+        return 0;
     }
 }

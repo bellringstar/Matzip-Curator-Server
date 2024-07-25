@@ -1,10 +1,15 @@
 package com.matzip.api.domain.review.entity;
 
 import com.matzip.api.common.entity.BaseTimeEntity;
+import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
 import com.matzip.api.domain.restaurant.entity.Restaurant;
+import com.matzip.api.domain.review.entity.vo.OverallRating;
+import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
+import com.matzip.api.domain.review.entity.vo.ReviewContent;
 import com.matzip.api.domain.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +22,9 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,42 +40,70 @@ public class Review extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "restaurant_id", nullable = false)
-    private Restaurant restaurant;
+    @Embedded
+    private ReviewAuthor author;
 
     @Column(nullable = false)
-    @Min(1)
-    @Min(5)
-    private Double overallRating;
+    private Long restaurantId;
 
-    @Column(nullable = false)
-    @Size(min = 10, max = 1000)
-    private String content;
+    @Embedded
+    private OverallRating overallRating;
+
+    @Embedded
+    private ReviewContent content;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewRating> ratings = new ArrayList<>();
 
-    @Builder
-    public Review(User user, Restaurant restaurant, String content) {
-        this.user = user;
-        this.restaurant = restaurant;
-        this.content = content;
+    private Review(ReviewAuthor author, Long restaurantId, ReviewContent content) {
+        this.author = Objects.requireNonNull(author);
+        this.restaurantId = Objects.requireNonNull(restaurantId);
+        this.content = Objects.requireNonNull(content);
+        this.overallRating = new OverallRating(0); // 초기값
     }
 
-    public static Review createReview(User user, Restaurant restaurant, String content) {
-        Review review = new Review();
-        review.user = user;
-        review.restaurant = restaurant;
-        review.content = content;
-        return review;
+    public static Review createReview(ReviewAuthor author, Long restaurantId, ReviewContent content) {
+        return new Review(author, restaurantId, content);
     }
 
-    public void addReviewRating(ReviewRating rating) {
-        ratings.add(rating);
+    //TODO: 동시성 이슈 생각
+    public void updateContent(ReviewContent content) {
+        this.content = Objects.requireNonNull(content);
+    }
+
+    public void addRating(RestaurantAspect aspect, double score) {
+        ReviewRating reviewRating = ReviewRating.createReviewRating(this, aspect, score);
+        this.ratings.add(reviewRating);
+        recalculateOverallRating();
+    }
+
+    public void updateRating(RestaurantAspect aspect, double score) {
+        ratings.stream()
+                .filter(r -> r.getAspect() == aspect)
+                .findFirst()
+                .ifPresent(r -> r.updateScore(score));
+        recalculateOverallRating();
+    }
+
+    public void removeRating(RestaurantAspect aspect) {
+        ratings.removeIf(r -> r.getAspect() == aspect);
+        recalculateOverallRating();
+    }
+
+    private void recalculateOverallRating() {
+        if (ratings.isEmpty()) {
+            this.overallRating = new OverallRating(0);
+            return;
+        }
+
+        double average = ratings.stream()
+                .mapToDouble(ReviewRating::getRating)
+                .average()
+                .orElse(0.0);
+        this.overallRating = new OverallRating(average);
+    }
+
+    public List<ReviewRating> getRatings() {
+        return Collections.unmodifiableList(ratings);
     }
 }
