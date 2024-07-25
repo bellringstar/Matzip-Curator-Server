@@ -41,7 +41,7 @@ public class PersonalizedRatingService implements RatingService {
             return getDefaultRating(restaurant);
         }
 
-        List<Review> reviews = reviewViewService.getReviewsForRestaurant(restaurant.getId());
+        List<Review> reviews = reviewViewService.getReviewsForRestaurant(restaurant.getId()); //TODO: 서비스 분리 필요
 
         double personalizedScore = calculatePersonalizedScore(userPreference, restaurant);
         double collaborativeScore = calculateCollaborativeScore(userId, reviews);

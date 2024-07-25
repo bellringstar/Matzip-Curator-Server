@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  mysql:
+  mysql-master:
     image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -11,7 +11,23 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ./mysql-master.cnf:/etc/mysql/my.cnf
+      - mysql-master-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  mysql-replica:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql-replica.cnf:/etc/mysql/my.cnf
+      - mysql-replica-data:/var/lib/mysql
     networks:
       - app-network
 
@@ -165,7 +181,8 @@ services:
       - app-network
 
 volumes:
-  mysql-data:
+  mysql-master-data:
+  mysql-replica-data:
   redis-data:
   es-data-1:
   es-data-2:
