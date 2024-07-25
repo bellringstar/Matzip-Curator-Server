@@ -101,3 +101,5 @@ application-*.properties
 
 ## env
 .env
+mysql-master.cnf
+mysql-replica.cnf

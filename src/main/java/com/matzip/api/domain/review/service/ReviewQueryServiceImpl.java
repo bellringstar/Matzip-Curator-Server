@@ -1,6 +1,7 @@
 package com.matzip.api.domain.review.service;
 
 import com.matzip.api.domain.review.entity.Review;
+import com.matzip.api.domain.review.repository.ReviewRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class ReviewViewServiceImpl implements ReviewViewService {
+public class ReviewQueryServiceImpl implements ReviewQueryService {
+
+    private final ReviewRepository reviewRepository;
+
     @Override
     public Review getReviewById(Long id) {
         return null;

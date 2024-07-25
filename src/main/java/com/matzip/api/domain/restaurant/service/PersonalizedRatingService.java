@@ -10,7 +10,7 @@ import com.matzip.api.domain.restaurant.entity.Restaurant;
 import com.matzip.api.domain.restaurant.entity.RestaurantCharacteristic;
 import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.ReviewRating;
-import com.matzip.api.domain.review.service.ReviewViewService;
+import com.matzip.api.domain.review.service.ReviewQueryService;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +31,7 @@ public class PersonalizedRatingService implements RatingService {
     private static final long RETRY_DELAY = 100; // milliseconds
 
     private final Map<String, UserPreference> userPreferenceCache = new ConcurrentHashMap<>(); //TODO: redis로 변경 -> 사용자 로그인시 레디스에 사용자 선호도 등록처리
-    private final ReviewViewService reviewViewService;
+    private final ReviewQueryService reviewQueryService;
     private final DomainEventPublisher eventPublisher;
 
     @Override
@@ -41,7 +41,7 @@ public class PersonalizedRatingService implements RatingService {
             return getDefaultRating(restaurant);
         }
 
-        List<Review> reviews = reviewViewService.getReviewsForRestaurant(restaurant.getId()); //TODO: 서비스 분리 필요
+        List<Review> reviews = reviewQueryService.getReviewsForRestaurant(restaurant.getId()); //TODO: 서비스 분리 필요
 
         double personalizedScore = calculatePersonalizedScore(userPreference, restaurant);
         double collaborativeScore = calculateCollaborativeScore(userId, reviews);

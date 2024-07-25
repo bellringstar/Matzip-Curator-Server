@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface ReviewViewService {
+public interface ReviewQueryService {
     /**
      * ID로 특정 리뷰를 조회합니다.
      *

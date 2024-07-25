@@ -15,7 +15,7 @@ import com.matzip.api.domain.restaurant.entity.Restaurant;
 import com.matzip.api.domain.restaurant.entity.RestaurantCharacteristic;
 import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.ReviewRating;
-import com.matzip.api.domain.review.service.ReviewViewService;
+import com.matzip.api.domain.review.service.ReviewQueryService;
 import com.matzip.api.domain.user.entity.User;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class PersonalizedRatingServiceTest {
 
     @Mock
-    private ReviewViewService reviewViewService;
+    private ReviewQueryService reviewQueryService;
 
     @Mock
     private DomainEventPublisher eventPublisher;
@@ -81,12 +81,12 @@ class PersonalizedRatingServiceTest {
             String username = "testUser";
             personalizedRatingService.handleUserPreferenceUpdated(
                     new UserPreferenceUpdatedEvent(null, username, userPreference));
-            when(reviewViewService.getReviewsForRestaurant(restaurant.getId())).thenReturn(reviews);
+            when(reviewQueryService.getReviewsForRestaurant(restaurant.getId())).thenReturn(reviews);
 
             double rating = personalizedRatingService.calculateRating(username, restaurant);
 
             assertTrue(rating > 0 && rating <= 5);
-            verify(reviewViewService).getReviewsForRestaurant(restaurant.getId());
+            verify(reviewQueryService).getReviewsForRestaurant(restaurant.getId());
         }
 
         @Test
