@@ -8,7 +8,7 @@ import com.matzip.api.domain.recommendation.event.UserPreferenceRequestEvent;
 import com.matzip.api.domain.recommendation.event.UserPreferenceUpdatedEvent;
 import com.matzip.api.domain.restaurant.entity.Restaurant;
 import com.matzip.api.domain.restaurant.entity.RestaurantCharacteristic;
-import com.matzip.api.domain.review.entity.Review;
+import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.entity.ReviewRating;
 import com.matzip.api.domain.review.service.ReviewQueryService;
 import java.util.EnumMap;
@@ -41,7 +41,7 @@ public class PersonalizedRatingService implements RatingService {
             return getDefaultRating(restaurant);
         }
 
-        List<Review> reviews = reviewQueryService.getReviewsForRestaurant(restaurant.getId()); //TODO: 서비스 분리 필요
+        List<ReviewDto> reviews = reviewQueryService.getReviewsByRestaurantId(restaurant.getId());
 
         double personalizedScore = calculatePersonalizedScore(userPreference, restaurant);
         double collaborativeScore = calculateCollaborativeScore(userId, reviews);
@@ -98,7 +98,7 @@ public class PersonalizedRatingService implements RatingService {
         return totalWeight > 0 ? personalizedScore / totalWeight : 0.0;
     }
 
-    private double calculateCollaborativeScore(String userId, List<Review> restaurantReviews) {
+    private double calculateCollaborativeScore(String userId, List<ReviewDto> restaurantReviews) {
         UserPreference userPreference = userPreferenceCache.get(userId);
         if (userPreference == null || restaurantReviews.isEmpty()) {
             return 0.0;
@@ -108,7 +108,7 @@ public class PersonalizedRatingService implements RatingService {
         return calculateAspectScores(userPreference, restaurantReviews, userSimilarities);
     }
 
-    private double calculateAspectScores(UserPreference userPreference, List<Review> restaurantReviews,
+    private double calculateAspectScores(UserPreference userPreference, List<ReviewDto> restaurantReviews,
                                          Map<String, Double> userSimilarities) {
         Map<RestaurantAspect, Double> aspectScores = new EnumMap<>(RestaurantAspect.class);
         Map<RestaurantAspect, Double> aspectWeights = new EnumMap<>(RestaurantAspect.class);
@@ -121,15 +121,15 @@ public class PersonalizedRatingService implements RatingService {
         return calculateWeightedAverage(aspectScores, aspectWeights);
     }
 
-    private void calculateAspectScoreForAspect(List<Review> restaurantReviews, UserPreference userPreference,
+    private void calculateAspectScoreForAspect(List<ReviewDto> restaurantReviews, UserPreference userPreference,
                                                Map<String, Double> userSimilarities,
                                                RestaurantAspect aspect, Map<RestaurantAspect, Double> aspectScores,
                                                Map<RestaurantAspect, Double> aspectWeights) {
         double weightedSum = 0.0;
         double similaritySum = 0.0;
 
-        for (Review review : restaurantReviews) {
-            Double similarity = userSimilarities.get(review.getUser().getLoginId());
+        for (ReviewDto review : restaurantReviews) {
+            Double similarity = userSimilarities.get(review.getAuthor().getLoginId());
             if (similarity != null && similarity > 0) {
                 Double rating = getAspectRating(review, aspect);
                 if (rating != null) {
@@ -146,7 +146,7 @@ public class PersonalizedRatingService implements RatingService {
     }
 
 
-    private Double getAspectRating(Review review, RestaurantAspect aspect) {
+    private Double getAspectRating(ReviewDto review, RestaurantAspect aspect) {
         return review.getRatings().stream()
                 .filter(rating -> rating.getAspect() == aspect)
                 .findFirst()
@@ -171,12 +171,12 @@ public class PersonalizedRatingService implements RatingService {
         return totalWeight > 0 ? weightedSum / totalWeight : 0.0;
     }
 
-    private Map<String, Double> calculateUserSimilarities(String userId, List<Review> restaurantReviews) {
+    private Map<String, Double> calculateUserSimilarities(String userId, List<ReviewDto> restaurantReviews) {
         UserPreference userPreference = userPreferenceCache.get(userId);
         Map<String, Double> similarities = new HashMap<>();
 
-        for (Review review : restaurantReviews) {
-            String reviewerUsername = review.getUser().getLoginId();
+        for (ReviewDto review : restaurantReviews) {
+            String reviewerUsername = review.getAuthor().getLoginId();
             double similarity = calculateReviewSimilarity(userPreference, review);
             similarities.put(reviewerUsername, similarity);
         }
@@ -184,7 +184,7 @@ public class PersonalizedRatingService implements RatingService {
         return similarities;
     }
 
-    private double calculateReviewSimilarity(UserPreference userPreference, Review review) {
+    private double calculateReviewSimilarity(UserPreference userPreference, ReviewDto review) {
         double dotProduct = 0.0;
         double norm1 = 0.0;
         double norm2 = 0.0;
