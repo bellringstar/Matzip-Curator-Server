@@ -2,6 +2,7 @@ package com.matzip.api.domain.review.repository;
 
 import com.matzip.api.domain.review.entity.Review;
 import io.lettuce.core.dynamic.annotation.Param;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @EntityGraph(attributePaths = {"ratings"})
     Page<Review> findWithRatingsByRestaurantId(Long restaurantId, Pageable pageable);
+
+    @EntityGraph(attributePaths = {"ratings"})
+    List<Review> findWithRatingsByRestaurantId(Long restaurantId);
 
     @EntityGraph(attributePaths = {"ratings"})
     Page<Review> findWithRatingsByAuthorId(Long authorId, Pageable pageable);
