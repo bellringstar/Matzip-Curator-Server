@@ -47,7 +47,4 @@ public class ReviewRating {
         return reviewRating;
     }
 
-    public void updateScore(double score) {
-        rating = new Rating(score);
-    }
 }

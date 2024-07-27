@@ -21,9 +21,6 @@ import lombok.ToString;
 @ToString
 public class ReviewRatingDto {
 
-    // null인 경우 새로 생성되는 리뷰에 대한 레이팅 null이 아닌 경우 기존의 리뷰에 추가하는 점수
-    private Long reviewId;
-
     @NotNull
     private RestaurantAspect aspect;
 
@@ -34,7 +31,6 @@ public class ReviewRatingDto {
 
     public static ReviewRatingDto toDto(ReviewRating rating) {
         return ReviewRatingDto.builder()
-                .reviewId(rating.getReview().getId())
                 .aspect(rating.getAspect())
                 .rating(rating.getRating().getScore())
                 .build();

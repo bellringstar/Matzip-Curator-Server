@@ -60,37 +60,15 @@ public class Review extends BaseTimeEntity {
         this.restaurantId = Objects.requireNonNull(restaurantId);
         this.content = Objects.requireNonNull(content);
         this.overallRating = new OverallRating(0); // 초기값
+        recalculateOverallRating();
     }
 
     public static Review createReview(ReviewAuthor author, Long restaurantId, ReviewContent content) {
         return new Review(author, restaurantId, content);
     }
 
-    //TODO: 동시성 이슈 생각
-    public void updateContent(ReviewContent content) {
-        this.content = Objects.requireNonNull(content);
-    }
-
     public void deleteReview() {
         this.status = ReviewStatus.DELETED;
-    }
-
-    public void addRating(ReviewRating rating) {
-        this.ratings.add(rating);
-        recalculateOverallRating();
-    }
-
-    public void updateRating(RestaurantAspect aspect, double score) {
-        ratings.stream()
-                .filter(r -> r.getAspect() == aspect)
-                .findFirst()
-                .ifPresent(r -> r.updateScore(score));
-        recalculateOverallRating();
-    }
-
-    public void removeRating(RestaurantAspect aspect) {
-        ratings.removeIf(r -> r.getAspect() == aspect);
-        recalculateOverallRating();
     }
 
     private void recalculateOverallRating() {
