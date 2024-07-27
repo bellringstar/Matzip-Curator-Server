@@ -1,20 +1,21 @@
 package com.matzip.api.domain.review.service;
 
+import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.dto.ReviewRequestDto;
 import com.matzip.api.domain.review.dto.ReviewUpdateRequestDto;
 import com.matzip.api.domain.review.entity.Review;
+import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
 import java.util.List;
 
 public interface ReviewService {
     /**
      * 새로운 리뷰를 생성합니다.
      *
-     * @param userId 리뷰를 작성하는 사용자의 ID
-     * @param restaurantId 리뷰 대상 레스토랑의 ID
      * @param request 리뷰 생성 요청 정보
+     * @param author 리뷰를 작성자
      * @return 생성된 리뷰 정보
      */
-    Review createReview(Long userId, Long restaurantId, ReviewRequestDto request);
+    ReviewDto createReview(ReviewRequestDto request, ReviewAuthor author);
 
     /**
      * 기존 리뷰를 수정합니다.
@@ -23,7 +24,7 @@ public interface ReviewService {
      * @param request 리뷰 수정 요청 정보
      * @return 수정된 리뷰 정보
      */
-    Review updateReview(Long id, ReviewUpdateRequestDto request);
+    ReviewDto updateReview(Long id, ReviewUpdateRequestDto request);
 
     /**
      * 리뷰를 삭제합니다.
