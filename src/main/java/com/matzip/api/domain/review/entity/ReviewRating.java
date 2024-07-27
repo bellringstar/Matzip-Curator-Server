@@ -1,6 +1,7 @@
 package com.matzip.api.domain.review.entity;
 
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
+import com.matzip.api.domain.review.entity.vo.Rating;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -35,9 +36,9 @@ public class ReviewRating {
     private RestaurantAspect aspect;
 
     @Column(nullable = false)
-    private Double rating; //Todo: VO로 변경
+    private Rating rating;
 
-    public static ReviewRating createReviewRating(Review review, RestaurantAspect aspect, Double rating) {
+    public static ReviewRating createReviewRating(Review review, RestaurantAspect aspect, Rating rating) {
         ReviewRating reviewRating = new ReviewRating();
         reviewRating.review = review;
         reviewRating.aspect = aspect;
@@ -47,6 +48,6 @@ public class ReviewRating {
     }
 
     public void updateScore(double score) {
-        rating = score;
+        rating = new Rating(score);
     }
 }
