@@ -13,19 +13,17 @@ import lombok.ToString;
 public class ReviewAuthor {
 
     private final Long id;
-    private final String loginId;
-    private final String name;
+
+    private final String displayName;
 
     // JPA 스펙을 위한 기본 생성자
     protected ReviewAuthor() {
         this.id = null;
-        this.loginId = null;
-        this.name = null;
+        this.displayName = null;
     }
 
-    public ReviewAuthor(Long id, String loginId, String name) {
+    public ReviewAuthor(Long id, String displayName) {
         this.id = Objects.requireNonNull(id, "Author id must not be null");
-        this.loginId = Objects.requireNonNull(loginId, "Author loginId must not be null");
-        this.name = Objects.requireNonNull(name, "Author name must not be null");
+        this.displayName = Objects.requireNonNull(displayName, "Author loginId must not be null");
     }
 }

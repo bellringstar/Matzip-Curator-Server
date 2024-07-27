@@ -42,7 +42,7 @@ public class ReviewQueryServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        review = Review.createReview(new ReviewAuthor(1L, "loginId", "name"), 1L, new ReviewContent("contentcontent"));
+        review = Review.createReview(new ReviewAuthor(1L,  "name"), 1L, new ReviewContent("contentcontent"));
     }
 
     @Test

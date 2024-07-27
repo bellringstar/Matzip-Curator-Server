@@ -34,8 +34,6 @@ public class ReviewAuthorFactoryTest {
     @DisplayName("유효한 Authentication with UserPrincipal이 주어졌을 때, createFromSecurityContext 메서드는 ReviewAuthor를 성공적으로 생성한다.")
     public void test_create_from_valid_authentication() {
         when(user.getId()).thenReturn(1L);
-        when(user.getLoginId()).thenReturn("loginId");
-        when(user.getName()).thenReturn("name");
 
         UserPrincipal userPrincipal = UserPrincipal.create(user);
         Authentication authentication = mock(Authentication.class);
@@ -46,9 +44,8 @@ public class ReviewAuthorFactoryTest {
 
         // Then
         assertNotNull(reviewAuthor);
+        assertNotNull(reviewAuthor.getDisplayName());
         assertEquals(1L, reviewAuthor.getId());
-        assertEquals("loginId", reviewAuthor.getLoginId());
-        assertEquals("name", reviewAuthor.getName());
     }
 
     @Test
