@@ -29,5 +29,5 @@ public class ReviewRequestDto {
     @NotNull
     @Size(min = 1, message = "At least one rating is required")
     @Valid
-    private List<ReviewRatingRequestDto> ratings = new ArrayList<>();
+    private List<ReviewRatingDto> ratings = new ArrayList<>();
 }
