@@ -20,9 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class ReviewRatingServiceImpl implements ReviewRatingService {
 
-    private ReviewRepository reviewRepository;
-    private ReviewRatingRepository reviewRatingRepository;
-    private ValidationUtils validator;
+    private final ReviewRepository reviewRepository;
+    private final ReviewRatingRepository reviewRatingRepository;
+    private final ValidationUtils validator;
 
     @Override
     public ReviewRatingDto addReviewRating(ReviewRatingDto reviewRatingDto) {
