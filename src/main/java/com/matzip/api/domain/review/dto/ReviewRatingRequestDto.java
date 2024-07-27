@@ -1,7 +1,6 @@
 package com.matzip.api.domain.review.dto;
 
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
-import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.ReviewRating;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -19,7 +18,9 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ReviewRatingDto {
+public class ReviewRatingRequestDto {
+
+    private Long reviewId;
 
     @NotNull
     private RestaurantAspect aspect;
@@ -29,10 +30,4 @@ public class ReviewRatingDto {
     @Max(5)
     private double rating;
 
-    public static ReviewRatingDto toDto(ReviewRating rating) {
-        return ReviewRatingDto.builder()
-                .aspect(rating.getAspect())
-                .rating(rating.getRating().getScore())
-                .build();
-    }
 }

@@ -4,7 +4,7 @@ import com.matzip.api.common.error.ReviewErrorCode;
 import com.matzip.api.common.exception.ApiException;
 import com.matzip.api.common.util.ValidationUtils;
 import com.matzip.api.domain.review.dto.ReviewDto;
-import com.matzip.api.domain.review.dto.ReviewRatingDto;
+import com.matzip.api.domain.review.dto.ReviewRatingRequestDto;
 import com.matzip.api.domain.review.dto.ReviewRequestDto;
 import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
@@ -30,8 +30,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review review = Review.createReview(author, request.getRestaurantId(), new ReviewContent(request.getContent()));
         validator.validate(review);
         Review savedReview = reviewRepository.save(review);
-        // auto_increment 를 사용중이라 save 쿼리가 나가야 id가 생긴다.
-        for (ReviewRatingDto rating : request.getRatings()) {
+        for (ReviewRatingRequestDto rating : request.getRatings()) {
             rating.setReviewId(savedReview.getId());
             reviewRatingService.addReviewRating(rating);
         }
