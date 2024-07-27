@@ -25,6 +25,7 @@ public class Restaurant extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "restaurant_id")
     private Long id;
 
     @Column(name = "external_id", unique = true)
@@ -39,8 +40,8 @@ public class Restaurant extends BaseTimeEntity {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RestaurantCharacteristic> characteristics = new ArrayList<>();
 
-    @OneToMany(mappedBy = "restaurant")
-    private List<Review> reviews = new ArrayList<>();
+//    @OneToMany(mappedBy = "restaurant_id")
+//    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public Restaurant(String externalId, String name) {

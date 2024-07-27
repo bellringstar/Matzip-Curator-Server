@@ -25,6 +25,7 @@ public class RestaurantCharacteristic {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "restaurant_characteristic_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

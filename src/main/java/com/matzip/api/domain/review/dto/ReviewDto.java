@@ -5,6 +5,7 @@ import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.vo.OverallRating;
 import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
 import com.matzip.api.domain.review.entity.vo.ReviewContent;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +32,10 @@ public class ReviewDto extends BaseTimeEntity {
 
     private List<ReviewRatingResponseDto> ratings = new ArrayList<>();
 
+    private LocalDateTime createdDate;
+
+    private LocalDateTime modifiedDate;
+
     private ReviewDto(ReviewAuthor author, Long restaurantId, ReviewContent content) {
         this.author = Objects.requireNonNull(author);
         this.restaurantId = Objects.requireNonNull(restaurantId);
@@ -50,6 +55,8 @@ public class ReviewDto extends BaseTimeEntity {
                 .stream()
                 .map(ReviewRatingResponseDto::toDto)
                 .collect(Collectors.toUnmodifiableList());
+        dto.createdDate = review.getCreatedDate();
+        dto.modifiedDate = review.getModifiedDate();
 
         return dto;
     }

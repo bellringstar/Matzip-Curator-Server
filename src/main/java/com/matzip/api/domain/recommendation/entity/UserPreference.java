@@ -4,6 +4,7 @@ import com.matzip.api.common.entity.BaseTimeEntity;
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
 import com.matzip.api.domain.user.entity.User;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,6 +27,7 @@ import lombok.NoArgsConstructor;
 public class UserPreference extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_preference_id")
     private Long id;
 
     @OneToOne

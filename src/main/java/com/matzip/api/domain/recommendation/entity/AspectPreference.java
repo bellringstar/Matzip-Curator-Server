@@ -24,6 +24,7 @@ public class AspectPreference {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "aspect_preference_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -26,7 +26,7 @@ public class UserResponseDto {
                 user.getLoginId(),
                 user.getEmail(),
                 user.getRoles(),
-                user.getCreateDate(),
+                user.getCreatedDate(),
                 user.getModifiedDate()
         );
     }
