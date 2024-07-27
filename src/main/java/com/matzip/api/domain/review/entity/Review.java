@@ -64,9 +64,8 @@ public class Review extends BaseTimeEntity {
         this.content = Objects.requireNonNull(content);
     }
 
-    public void addRating(RestaurantAspect aspect, double score) {
-        ReviewRating reviewRating = ReviewRating.createReviewRating(this, aspect, new Rating(score));
-        this.ratings.add(reviewRating);
+    public void addRating(ReviewRating rating) {
+        this.ratings.add(rating);
         recalculateOverallRating();
     }
 
