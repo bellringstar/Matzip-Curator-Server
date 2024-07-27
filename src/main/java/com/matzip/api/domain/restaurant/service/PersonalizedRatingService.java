@@ -150,7 +150,7 @@ public class PersonalizedRatingService implements RatingService {
         return review.getRatings().stream()
                 .filter(rating -> rating.getAspect() == aspect)
                 .findFirst()
-                .map(ReviewRating::getRating)
+                .map(rating -> rating.getRating().getScore())
                 .orElse(null);
     }
 
@@ -192,7 +192,7 @@ public class PersonalizedRatingService implements RatingService {
         for (ReviewRating rating : review.getRatings()) {
             RestaurantAspect aspect = rating.getAspect();
             double userScore = userPreference.getAspectScore(aspect);
-            double reviewScore = rating.getRating();
+            double reviewScore = rating.getRating().getScore();
 
             dotProduct += userScore * reviewScore;
             norm1 += userScore * userScore;
