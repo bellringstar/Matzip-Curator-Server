@@ -9,7 +9,7 @@ import com.matzip.api.domain.recommendation.event.UserPreferenceUpdatedEvent;
 import com.matzip.api.domain.restaurant.entity.Restaurant;
 import com.matzip.api.domain.restaurant.entity.RestaurantCharacteristic;
 import com.matzip.api.domain.review.dto.ReviewDto;
-import com.matzip.api.domain.review.entity.ReviewRating;
+import com.matzip.api.domain.review.dto.ReviewRatingResponseDto;
 import com.matzip.api.domain.review.service.ReviewQueryService;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -150,7 +150,7 @@ public class PersonalizedRatingService implements RatingService {
         return review.getRatings().stream()
                 .filter(rating -> rating.getAspect() == aspect)
                 .findFirst()
-                .map(rating -> rating.getRating().getScore())
+                .map(rating -> rating.getRating())
                 .orElse(null);
     }
 
@@ -189,10 +189,10 @@ public class PersonalizedRatingService implements RatingService {
         double norm1 = 0.0;
         double norm2 = 0.0;
 
-        for (ReviewRating rating : review.getRatings()) {
+        for (ReviewRatingResponseDto rating : review.getRatings()) {
             RestaurantAspect aspect = rating.getAspect();
             double userScore = userPreference.getAspectScore(aspect);
-            double reviewScore = rating.getRating().getScore();
+            double reviewScore = rating.getRating();
 
             dotProduct += userScore * reviewScore;
             norm1 += userScore * userScore;
