@@ -3,7 +3,7 @@ package com.matzip.api.domain.review.service;
 import com.matzip.api.common.error.ReviewErrorCode;
 import com.matzip.api.common.exception.ApiException;
 import com.matzip.api.domain.review.dto.ReviewDto;
-import com.matzip.api.domain.review.entity.Review;
+import com.matzip.api.domain.review.dto.ReviewFilterRequestDto;
 import com.matzip.api.domain.review.repository.ReviewRepository;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,5 +58,10 @@ public class ReviewQueryServiceImpl implements ReviewQueryService {
     public double getAverageRatingForRestaurant(Long restaurantId) {
         return reviewRepository.findAverageRatingByRestaurantId(restaurantId)
                 .orElseThrow(() -> new ApiException(ReviewErrorCode.NOT_FOUND));
+    }
+
+    @Override
+    public Page<ReviewDto> getFilteredReviews(ReviewFilterRequestDto filterRequest, Pageable pageable) {
+        return reviewRepository.findFilteredReviews(filterRequest, pageable);
     }
 }

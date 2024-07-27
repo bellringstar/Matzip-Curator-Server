@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface ReviewRepository extends JpaRepository<Review, Long> {
+public interface ReviewRepository extends JpaRepository<Review, Long>, ReviewRepositoryCustom {
 
     @EntityGraph(attributePaths = {"ratings"})
     Optional<Review> findWithRatingsById(Long id);
@@ -27,6 +27,8 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     @EntityGraph(attributePaths = {"ratings"})
     Page<Review> findAllWithRatingsByOrderByCreatedDateDesc(Pageable pageable);
 
-    @Query("SELECT AVG(r.overallRating.value) FROM Review r WHERE r.restaurantId = :restaurantId")
+    @Query("SELECT AVG(r.overallRating.score) FROM Review r WHERE r.restaurantId = :restaurantId")
     Optional<Double> findAverageRatingByRestaurantId(@Param("restaurantId") Long restaurantId);
+
+
 }

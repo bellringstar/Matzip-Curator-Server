@@ -1,6 +1,7 @@
 package com.matzip.api.domain.review.service;
 
 import com.matzip.api.domain.review.dto.ReviewDto;
+import com.matzip.api.domain.review.dto.ReviewFilterRequestDto;
 import com.matzip.api.domain.review.entity.Review;
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -60,4 +61,14 @@ public interface ReviewQueryService {
      * @return 리뷰 종합 평균 평점
      */
     double getAverageRatingForRestaurant(Long restaurantId);
+
+
+    /**
+     * 조건에 따라 정렬된 리뷰 목록을 조회합니다.
+     *
+     * @param filterRequest 리뷰 필터링 정보
+     * @param pageable      페이징 정보
+     * @return 필터링된 리뷰 목록 (페이지)
+     */
+    Page<ReviewDto> getFilteredReviews(ReviewFilterRequestDto filterRequest, Pageable pageable);
 }
