@@ -2,14 +2,16 @@ package com.matzip.api.domain.review.entity;
 
 import com.matzip.api.common.entity.BaseTimeEntity;
 import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
+import com.matzip.api.domain.review.entity.enums.ReviewStatus;
 import com.matzip.api.domain.review.entity.vo.OverallRating;
-import com.matzip.api.domain.review.entity.vo.Rating;
 import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
 import com.matzip.api.domain.review.entity.vo.ReviewContent;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,8 +47,13 @@ public class Review extends BaseTimeEntity {
     @Embedded
     private ReviewContent content;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ReviewStatus status = ReviewStatus.ACTIVE;
+
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ReviewRating> ratings = new ArrayList<>();
+
 
     private Review(ReviewAuthor author, Long restaurantId, ReviewContent content) {
         this.author = Objects.requireNonNull(author);
@@ -62,6 +69,10 @@ public class Review extends BaseTimeEntity {
     //TODO: 동시성 이슈 생각
     public void updateContent(ReviewContent content) {
         this.content = Objects.requireNonNull(content);
+    }
+
+    public void deleteReview() {
+        this.status = ReviewStatus.DELETED;
     }
 
     public void addRating(ReviewRating rating) {

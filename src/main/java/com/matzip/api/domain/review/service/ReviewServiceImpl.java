@@ -1,5 +1,7 @@
 package com.matzip.api.domain.review.service;
 
+import com.matzip.api.common.error.ReviewErrorCode;
+import com.matzip.api.common.exception.ApiException;
 import com.matzip.api.common.util.ValidationUtils;
 import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.dto.ReviewRatingDto;
@@ -38,6 +40,8 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public void deleteReview(Long id) {
-
+        Review review = reviewRepository.findById(id)
+                .orElseThrow(() -> new ApiException(ReviewErrorCode.NOT_FOUND));
+        review.deleteReview();
     }
 }

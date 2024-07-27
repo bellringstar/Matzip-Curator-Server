@@ -34,14 +34,4 @@ public class ReviewRatingServiceImpl implements ReviewRatingService {
         ReviewRating savedReviewRating = reviewRatingRepository.save(reviewRating);
         return ReviewRatingDto.toDto(savedReviewRating);
     }
-
-    @Override
-    public ReviewRatingDto updateReviewRating(ReviewRatingDto reviewRatingDto) {
-        return null;
-    }
-
-    @Override
-    public void deleteReviewRating(Long id) {
-
-    }
 }
