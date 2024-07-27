@@ -18,15 +18,6 @@ public interface ReviewService {
     ReviewDto createReview(ReviewRequestDto request, ReviewAuthor author);
 
     /**
-     * 기존 리뷰를 수정합니다.
-     *
-     * @param id 수정할 리뷰의 ID
-     * @param request 리뷰 수정 요청 정보
-     * @return 수정된 리뷰 정보
-     */
-    ReviewDto updateReview(Long id, ReviewUpdateRequestDto request);
-
-    /**
      * 리뷰를 삭제합니다.
      *
      * @param id 삭제할 리뷰의 ID

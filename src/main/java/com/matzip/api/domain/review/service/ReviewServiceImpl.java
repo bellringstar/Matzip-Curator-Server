@@ -4,7 +4,6 @@ import com.matzip.api.common.util.ValidationUtils;
 import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.dto.ReviewRatingDto;
 import com.matzip.api.domain.review.dto.ReviewRequestDto;
-import com.matzip.api.domain.review.dto.ReviewUpdateRequestDto;
 import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
 import com.matzip.api.domain.review.entity.vo.ReviewContent;
@@ -35,11 +34,6 @@ public class ReviewServiceImpl implements ReviewService {
             reviewRatingService.addReviewRating(rating);
         }
         return ReviewDto.toDto(savedReview);
-    }
-
-    @Override
-    public ReviewDto updateReview(Long id, ReviewUpdateRequestDto request) {
-        return null;
     }
 
     @Override
