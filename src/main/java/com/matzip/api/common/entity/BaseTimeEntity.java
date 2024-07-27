@@ -20,7 +20,7 @@ public abstract class BaseTimeEntity {
     @CreatedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    private LocalDateTime createDate;
+    private LocalDateTime createdDate;
 
     @LastModifiedDate
     @JsonSerialize(using = LocalDateTimeSerializer.class)
