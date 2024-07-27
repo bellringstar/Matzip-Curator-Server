@@ -1,6 +1,7 @@
 package com.matzip.api.domain.review.controller;
 
 import com.matzip.api.common.api.Api;
+import com.matzip.api.domain.recommendation.enums.RestaurantAspect;
 import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.dto.ReviewFilterRequestDto;
 import com.matzip.api.domain.review.dto.ReviewRequestDto;
@@ -9,6 +10,8 @@ import com.matzip.api.domain.review.entity.vo.ReviewAuthor;
 import com.matzip.api.domain.review.service.ReviewQueryService;
 import com.matzip.api.domain.review.service.ReviewService;
 import jakarta.validation.Valid;
+import java.util.EnumMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,12 +36,27 @@ public class ReviewController {
 
     @GetMapping("/filter")
     public Page<ReviewDto> getReviews(
-            @RequestBody ReviewFilterRequestDto filterRequest,
+            @RequestParam(required = false) Long restaurantId,
+            @RequestParam(required = false) Double price,
+            @RequestParam(required = false) Double taste,
+            @RequestParam(required = false) Double atmosphere,
+            @RequestParam(required = false) Double portion,
+            @RequestParam(required = false) Double noiseLevel,
+            @RequestParam(required = false) Double service,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "createdDate") String sort
     ) {
+        Map<RestaurantAspect, Double> aspectRatings = new EnumMap<>(RestaurantAspect.class);
+        if (price != null) aspectRatings.put(RestaurantAspect.PRICE, price);
+        if (taste != null) aspectRatings.put(RestaurantAspect.TASTE, taste);
+        if (atmosphere != null) aspectRatings.put(RestaurantAspect.ATMOSPHERE, atmosphere);
+        if (portion != null) aspectRatings.put(RestaurantAspect.PORTION, portion);
+        if (noiseLevel != null) aspectRatings.put(RestaurantAspect.NOISE_LEVEL, noiseLevel);
+        if (service != null) aspectRatings.put(RestaurantAspect.SERVICE, service);
+
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
+        ReviewFilterRequestDto filterRequest = new ReviewFilterRequestDto(restaurantId, aspectRatings);
         Page<ReviewDto> filteredReviews = reviewQueryService.getFilteredReviews(filterRequest, pageable);
         return filteredReviews;
     }
