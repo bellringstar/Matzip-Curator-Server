@@ -2,6 +2,7 @@ package com.matzip.api.domain.review.service;
 
 import com.matzip.api.common.error.ReviewErrorCode;
 import com.matzip.api.common.exception.ApiException;
+import com.matzip.api.common.util.ValidationUtils;
 import com.matzip.api.domain.review.dto.ReviewRatingDto;
 import com.matzip.api.domain.review.entity.Review;
 import com.matzip.api.domain.review.entity.ReviewRating;
@@ -21,6 +22,7 @@ public class ReviewRatingServiceImpl implements ReviewRatingService {
 
     private ReviewRepository reviewRepository;
     private ReviewRatingRepository reviewRatingRepository;
+    private ValidationUtils validator;
 
     @Override
     public ReviewRatingDto addReviewRating(ReviewRatingDto reviewRatingDto) {
@@ -28,6 +30,7 @@ public class ReviewRatingServiceImpl implements ReviewRatingService {
                 .orElseThrow(() -> new ApiException(ReviewErrorCode.NOT_FOUND));
         ReviewRating reviewRating = ReviewRating.createReviewRating(review, reviewRatingDto.getAspect(),
                 new Rating(reviewRatingDto.getRating()));
+        validator.validate(reviewRating);
         ReviewRating savedReviewRating = reviewRatingRepository.save(reviewRating);
         return ReviewRatingDto.toDto(savedReviewRating);
     }
