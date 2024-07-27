@@ -1,6 +1,7 @@
 package com.matzip.api.domain.review.service;
 
 import com.matzip.api.domain.review.dto.ReviewRatingRequestDto;
+import com.matzip.api.domain.review.dto.ReviewRatingResponseDto;
 
 /**
  * The interface Review rating service.
@@ -13,5 +14,5 @@ public interface ReviewRatingService {
      * @param reviewRatingRequestDto the review rating dto
      * @return the review dto
      */
-    ReviewRatingRequestDto addReviewRating(ReviewRatingRequestDto reviewRatingRequestDto);
+    ReviewRatingResponseDto addReviewRating(ReviewRatingRequestDto reviewRatingRequestDto);
 }
