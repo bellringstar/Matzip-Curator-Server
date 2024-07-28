@@ -1,5 +1,6 @@
 package com.matzip.api.domain.external.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
@@ -8,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class RestaurantSearchResponse {
-    private List<Restaurant> restaurants;
+    private List<Restaurant> restaurants = new ArrayList<>();
+
 
     public RestaurantSearchResponse(NaverSearchResponse naverSearchResponse) {
         this.restaurants = naverSearchResponse.getItems().stream()
@@ -34,6 +36,7 @@ public class RestaurantSearchResponse {
         private String telephone;
         private String mapx;
         private String mapy;
+        private Double relevanceScore = 0.0;
 
         public Restaurant(String title, String category, String address, String roadAddress, String telephone,
                           String mapx, String mapy) {
