@@ -1,8 +1,10 @@
 package com.matzip.api.domain.review.service;
 
 import com.matzip.api.common.error.ReviewErrorCode;
+import com.matzip.api.common.event.DomainEventPublisher;
 import com.matzip.api.common.exception.ApiException;
 import com.matzip.api.common.util.ValidationUtils;
+import com.matzip.api.domain.review.client.RestaurantClient;
 import com.matzip.api.domain.review.dto.ReviewDto;
 import com.matzip.api.domain.review.dto.ReviewRatingRequestDto;
 import com.matzip.api.domain.review.dto.ReviewRequestDto;
@@ -24,9 +26,14 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final ReviewRatingService reviewRatingService;
     private final ValidationUtils validator;
+    private final RestaurantClient restaurantClient;
 
     @Override
     public ReviewDto createReview(ReviewRequestDto request, ReviewAuthor author) {
+        boolean validRestaurant = restaurantClient.isValidRestaurant(request.getRestaurantId());
+        if (!validRestaurant) {
+            throw new ApiException(ReviewErrorCode.NOT_FOUND, "restaurant not found");
+        }
         Review review = Review.createReview(author, request.getRestaurantId(), new ReviewContent(request.getContent()));
         validator.validate(review);
         Review savedReview = reviewRepository.save(review);
