@@ -7,6 +7,7 @@ import com.matzip.api.domain.external.service.RestaurantSearchService;
 import com.matzip.api.domain.restaurant.dto.LocationSearchRequest;
 import com.matzip.api.domain.restaurant.dto.RestaurantSyncResult;
 import com.matzip.api.domain.restaurant.entity.Restaurant;
+import com.matzip.api.domain.restaurant.event.RestaurantCreateRequestEvent;
 import com.matzip.api.domain.restaurant.repository.RestaurantRepository;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,5 +107,10 @@ public class RestaurantServiceImpl implements RestaurantService {
             }
         }
         return deactivated;
+    }
+
+    @EventListener
+    protected void createRequestEventHandler(RestaurantCreateRequestEvent event) {
+        createNewRestaurant(event.getExternalRestaurant());
     }
 }
