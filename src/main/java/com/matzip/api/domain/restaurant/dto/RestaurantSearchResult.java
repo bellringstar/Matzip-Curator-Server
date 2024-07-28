@@ -2,17 +2,19 @@ package com.matzip.api.domain.restaurant.dto;
 
 import com.matzip.api.domain.external.dto.RestaurantSearchResponse;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
+@ToString
 public class RestaurantSearchResult {
     private final List<RestaurantDto> restaurants;
 
     @Getter
     @Builder
+    @ToString
     public static class RestaurantDto {
         private final String title;
         private final String category;
@@ -33,15 +35,12 @@ public class RestaurantSearchResult {
                     .telephone(restaurant.getTelephone())
                     .mapx(restaurant.getMapx())
                     .mapy(restaurant.getMapy())
+                    .relevanceScore(restaurant.getRelevanceScore())
                     .build();
         }
     }
 
-    public static RestaurantSearchResult from(RestaurantSearchResponse response) {
-        List<RestaurantDto> restaurantDtos = response.getRestaurants().stream()
-                .map(RestaurantDto::from)
-                .collect(Collectors.toList());
-
+    public static RestaurantSearchResult from(List<RestaurantDto> restaurantDtos) {
         return RestaurantSearchResult.builder()
                 .restaurants(restaurantDtos)
                 .build();
