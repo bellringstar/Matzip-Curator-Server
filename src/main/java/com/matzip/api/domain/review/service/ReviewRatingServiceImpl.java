@@ -28,7 +28,7 @@ public class ReviewRatingServiceImpl implements ReviewRatingService {
     @Override
     public ReviewRatingResponseDto addReviewRating(ReviewRatingRequestDto reviewRatingRequestDto) {
         Review review = reviewRepository.findById(reviewRatingRequestDto.getReviewId())
-                .orElseThrow(() -> new ApiException(ReviewErrorCode.NOT_FOUND));
+                .orElseThrow(() -> new ApiException(ReviewErrorCode.INVALID_REQUEST));
         ReviewRating reviewRating = ReviewRating.createReviewRating(review, reviewRatingRequestDto.getAspect(),
                 new Rating(reviewRatingRequestDto.getRating()));
         validator.validate(reviewRating);
