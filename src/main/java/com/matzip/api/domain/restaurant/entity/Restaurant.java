@@ -1,7 +1,6 @@
 package com.matzip.api.domain.restaurant.entity;
 
 import com.matzip.api.common.entity.BaseTimeEntity;
-import com.matzip.api.domain.review.entity.Review;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,9 +38,6 @@ public class Restaurant extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RestaurantCharacteristic> characteristics = new ArrayList<>();
-
-//    @OneToMany(mappedBy = "restaurant_id")
-//    private List<Review> reviews = new ArrayList<>();
 
     @Builder
     public Restaurant(String externalId, String name) {
